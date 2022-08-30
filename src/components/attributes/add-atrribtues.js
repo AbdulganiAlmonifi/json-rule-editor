@@ -11,36 +11,41 @@ class AddAttributes extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {error: {}, name: props.attribute.name, type: props.attribute.type};
+        this.state = { error: {}, name: props.attribute.name, type: props.attribute.type, weight: props.attribute.weight };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeType = this.onChangeType.bind(this);
+        this.onChangeWeight = this.onChangeWeight.bind(this);
     }
 
     onChangeName(e) {
-       this.setState({name: e.target.value});
+        this.setState({ name: e.target.value });
     }
 
     onChangeType(e) {
-        this.setState({type: e.target.value});
+        this.setState({ type: e.target.value });
+    }
+
+    onChangeWeight(e) {
+        this.setState({ weight: e.target.value });
     }
 
     handleAdd(e) {
         e.preventDefault();
-        const error = attributeValidations({name: this.state.name, type: this.state.type});
-        
+        const error = attributeValidations({ name: this.state.name, type: this.state.type, weight: this.state.weight });
+
         if (Object.keys(error).length > 0) {
-            this.setState({error});
+            this.setState({ error });
         } else {
-            this.props.addAttribute({name: this.state.name, type: this.state.type});
+            this.props.addAttribute({ name: this.state.name, type: this.state.type, weight: this.state.weight });
         }
     }
 
     handleCancel() {
         this.props.cancel();
     }
-    
+
     render() {
         const { buttonProps } = this.props;
         const attribute_types = Object.keys(dataTypes);
@@ -50,10 +55,12 @@ class AddAttributes extends Component {
                     <div className='form-groups-inline'>
                         <InputField label="Name" onChange={this.onChangeName} value={this.props.attribute.name} error={this.state.error.name} />
                         <SelectField label="Type" options={attribute_types} onChange={this.onChangeType} value={this.props.attribute.type} error={this.state.error.type} />
+                        <InputField label="Weight" onChange={this.onChangeWeight} value={this.props.attribute.weight} error={this.state.error.weight} />
+
                     </div>
                     <div className="btn-group">
                         <Button label={buttonProps.primaryLabel} onConfirm={this.handleAdd} classname="primary-btn" type="submit" />
-                        <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn"/>
+                        <Button label={buttonProps.secondaryLabel} onConfirm={this.handleCancel} classname="cancel-btn" />
                     </div>
                 </div>
             </form>
