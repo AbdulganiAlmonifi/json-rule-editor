@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const InputField = (props) => {
-    const {label, onChange, error, value, required, readOnly, placeholder} = props;
+    const { label, onChange, error, value, required, readOnly, placeholder } = props;
     const [fieldValue, setFieldValue] = useState(value);
 
-    let errorClass = error ? 'error': undefined;
-    let readOnlyClass = readOnly ? 'readOnly': undefined;
+    let errorClass = error ? 'error' : undefined;
+    let readOnlyClass = readOnly ? 'readOnly' : undefined;
 
     const change = (e) => {
         setFieldValue(e.target.value);
@@ -19,6 +19,7 @@ const InputField = (props) => {
     return (<div className="form-field">
         {label && <label>{label}</label>}
         <input type="text" onChange={change} value={fieldValue} className={`${errorClass} ${readOnlyClass}`} disabled={readOnly} placeholder={placeholder} />
+        <div>{error}</div>
     </div>);
 };
 
@@ -31,9 +32,9 @@ InputField.defaultProps = {
     required: false,
     readOnly: false,
     placeholder: '',
-  };
-  
-  InputField.propTypes = {
+};
+
+InputField.propTypes = {
     label: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string,
