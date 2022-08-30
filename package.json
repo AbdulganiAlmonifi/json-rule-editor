@@ -11,11 +11,6 @@
   },
   "author": "vinzdeveloper@gmail.com",
   "license": "ISC",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/vinzdeveloper/json-rule-editor.git"
