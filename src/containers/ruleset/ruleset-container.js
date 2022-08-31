@@ -15,8 +15,9 @@ import * as Message from '../../constants/messages';
 import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import axios from 'axios';
 
-const tabs = [{ name: 'Facts' }, { name: 'Decisions' }];
+const tabs = [{ name: 'Facts' }, { name: 'Decisions' }, { name: 'Save' }];
 class RulesetContainer extends Component {
 
   constructor(props) {
@@ -32,13 +33,21 @@ class RulesetContainer extends Component {
 
   generateFile() {
     const { ruleset } = this.props;
-    const fileData = JSON.stringify(ruleset, null, '\t');
-    const blob = new Blob([fileData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = ruleset.name + '.json';
-    link.href = url;
-    link.click();
+    axios({
+      url: '/ruleset/save',
+      method: 'POST',
+      data: ruleset,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     this.setState({ generateFlag: true });
   }
 
@@ -50,9 +59,9 @@ class RulesetContainer extends Component {
     const { name } = this.props.ruleset;
     return (<SweetAlert
       success
-      title={"File generated!"}
+      title={"Changes Saved!"}
       onConfirm={this.cancelAlert}
-    > {`${name} rule is succefully generated at your default download location`}
+    > {`${name} rule is succefully saved to the database`}
     </SweetAlert>);
   }
 
@@ -79,7 +88,7 @@ class RulesetContainer extends Component {
           {this.state.activeTab === 'Decisions' && <Decisions decisions={indexedDecisions || []} attributes={attributes}
             handleDecisions={this.props.handleDecisions} outcomes={outcomes} />}
           {this.state.activeTab === 'Validate' && <ValidateRules attributes={attributes} decisions={decisions} />}
-          {this.state.activeTab === 'Generate' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile} />}
+          {this.state.activeTab === 'Save' && <Banner message={message} ruleset={this.props.ruleset} onConfirm={this.generateFile} />}
           {this.state.generateFlag && this.successAlert()}
         </div>
       </RuleErrorBoundary>
