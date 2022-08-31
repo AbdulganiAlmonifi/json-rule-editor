@@ -16,7 +16,7 @@ import { groupBy } from 'lodash/collection';
 import RuleErrorBoundary from '../../components/error/ruleset-error';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
-const tabs = [{ name: 'Facts' }, { name: 'Decisions' }, { name: 'Validate' }];
+const tabs = [{ name: 'Facts' }, { name: 'Decisions' }];
 class RulesetContainer extends Component {
 
   constructor(props) {
