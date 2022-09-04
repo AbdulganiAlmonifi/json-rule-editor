@@ -33,22 +33,27 @@ class RulesetContainer extends Component {
 
   generateFile() {
     const { ruleset } = this.props;
+
+    let self = this;
+    let href = window.location.href;
+    let splits = href.split('/');
+    let lastPart = splits.length >= 4 ? splits[3] : '';
+
     axios({
-      url: '/ruleset/save',
+      url: '/ruleset',
       method: 'POST',
-      data: ruleset,
+      data: { id: lastPart, data: ruleset },
       headers: {
         'Content-Type': 'application/json',
       }
     })
       .then(function (response) {
         console.log(response);
+        self.setState({ generateFlag: true });
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    this.setState({ generateFlag: true });
   }
 
   cancelAlert() {
